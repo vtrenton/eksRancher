@@ -38,6 +38,16 @@ resource "aws_eks_cluster" "rancher_cluster" {
     }
 }
 
+# For some reason - the default SG created by EKS only allows
+# control-plane to control-plane NOT worker -> control-plane
+# we need to figure out what SG it created and append a rule
+# that allows traffic from workers to the control plane
+# note that 'inbound' is set to 'self':
+# https://docs.aws.amazon.com/eks/latest/userguide/sec-group-reqs.html
+data "aws_eks_cluster" "eks_cluster_data" {
+  name = "RancherMC"
+}
+
 # create ssh keypair for local node access
 resource "tls_private_key" "private_key" {
   algorithm = "RSA"
@@ -57,13 +67,13 @@ resource "aws_key_pair" "generated_key" {
 # launch config for workers
 resource "aws_launch_template" "rancher_workers" {
     name_prefix   = "rancher-cow-"
-    image_id      = "ami-02f32259ae4f4512f"
+    #image_id      = "ami-02f32259ae4f4512f"
     instance_type = "t3.medium"
     
     # ssh key name
     key_name      = aws_key_pair.generated_key.key_name    
 
-    vpc_security_group_ids = [aws_security_group.eks_cluster_sg.id]
+    vpc_security_group_ids = [aws_security_group.eks_worker_sg.id]
     
     lifecycle {
         create_before_destroy = true

@@ -1,4 +1,14 @@
-resource "aws_security_group" "eks_cluster_sg" {
+# Allow inbound traffic from the worker nodes to the EKS control plane
+resource "aws_security_group_rule" "control_plane_to_worker" {
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.eks_worker_sg.id
+  security_group_id        = data.aws_eks_cluster.eks_cluster_data.vpc_config[0].cluster_security_group_id
+}
+
+resource "aws_security_group" "eks_worker_sg" {
   name        = "eks-cluster-sg"
   description = "Security group for EKS cluster with HTTP/HTTPS access"
   vpc_id      = aws_vpc.cluster_lan.id
@@ -65,4 +75,3 @@ resource "aws_security_group" "eks_cluster_sg" {
     Name = "eks-cluster-sg"
   }
 }
-
