@@ -141,9 +141,43 @@ resource "aws_iam_policy" "eks_worker_node_policy" {
         Resource = "*"
       },
       {
+        Sid      = "VPCPermissions",
+        Effect   = "Allow",
+        Action   = [
+            "ec2:ReplaceRoute",
+            "ec2:ModifyVpcAttribute",
+            "ec2:ModifySubnetAttribute",
+            "ec2:DisassociateRouteTable",
+            "ec2:DetachInternetGateway",
+            "ec2:DescribeVpcs",
+            "ec2:DeleteVpc",
+            "ec2:DeleteTags",
+            "ec2:DeleteSubnet",
+            "ec2:DeleteRouteTable",
+            "ec2:DeleteRoute",
+            "ec2:DeleteInternetGateway",
+            "ec2:CreateVpc",
+            "ec2:CreateSubnet",
+            "ec2:CreateSecurityGroup",
+            "ec2:CreateRouteTable",
+            "ec2:CreateRoute",
+            "ec2:CreateInternetGateway",
+            "ec2:AttachInternetGateway",
+            "ec2:AssociateRouteTable"
+        ],
+        Resource = "*"
+      },
+      {
         Sid      = "KMSPermissions",
         Effect   = "Allow",
-        Action   = "kms:ListKeys",
+        Action   = [
+            "kms:ListKeys",
+            "kms:Encrypt",
+            "kms:Decrypt",
+            "kms:ReEncrypt*",
+            "kms:GenerateDataKey*",
+            "kms:DescribeKey"
+        ]
         Resource = "*"
       }
     ]

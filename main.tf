@@ -38,11 +38,30 @@ resource "aws_eks_cluster" "rancher_cluster" {
     }
 }
 
+# create ssh keypair for local node access
+resource "tls_private_key" "private_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "local_file" "private_key" {
+  content         = tls_private_key.private_key.private_key_pem
+  filename        = "aws_private_key.pem"
+  file_permission = "0600"
+}
+resource "aws_key_pair" "generated_key" {
+  key_name   = "worker_key"
+  public_key = tls_private_key.private_key.public_key_openssh
+}
+
 # launch config for workers
 resource "aws_launch_template" "rancher_workers" {
     name_prefix   = "rancher-cow-"
-    image_id      = "ami-0a3c3a20c09d6f377"
+    image_id      = "ami-02f32259ae4f4512f"
     instance_type = "t3.medium"
+    
+    # ssh key name
+    key_name      = aws_key_pair.generated_key.key_name    
 
     vpc_security_group_ids = [aws_security_group.eks_cluster_sg.id]
     

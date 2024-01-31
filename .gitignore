@@ -2,3 +2,4 @@
 *.lock.hcl
 *.tfstate*
 *.terraform/*
+*.pem
