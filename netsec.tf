@@ -1,3 +1,10 @@
+# For some reason - the default SG created by EKS only allows
+# control-plane to control-plane NOT worker -> control-plane
+# we need to figure out what SG it created and append a rule
+# that allows traffic from workers to the control plane
+# note that 'inbound' is set to 'self':
+# https://docs.aws.amazon.com/eks/latest/userguide/sec-group-reqs.html
+
 # Allow inbound traffic from the worker nodes to the EKS control plane
 resource "aws_security_group_rule" "control_plane_to_worker" {
   type                     = "ingress"
@@ -5,7 +12,7 @@ resource "aws_security_group_rule" "control_plane_to_worker" {
   to_port                  = 443
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.eks_worker_sg.id
-  security_group_id        = data.aws_eks_cluster.eks_cluster_data.vpc_config[0].cluster_security_group_id
+  security_group_id        = aws_eks_cluster.rancher_cluster.vpc_config[0].cluster_security_group_id
 }
 
 resource "aws_security_group" "eks_worker_sg" {
