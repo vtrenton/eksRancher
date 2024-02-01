@@ -14,6 +14,16 @@ it's ingress-nginx - the default kubernetes one - don't like it? the fork button
 ## Note about EKS version
 Yea it's probably pretty old but I need to keep in the spirit of the Rancher Support Matrix: https://www.suse.com/suse-rancher/support-matrix/all-supported-versions
 
+## Note about AMI
+if you don't specify one - Amazon picks the purpose built AMI for EKS called bottlerocket and picks the spcific image for your version. I personally think the Amazon defaults are the best for an EKS cluster. So stick with that. On the other hand if you need to change to your shiney sexy super awesome Linux AMI with all the bells and whistles of the enterprise you can add an AMI in the `rancher_cluster` `aws_eks_cluster` resource in the `eks.tf` file. For example: 
+```
+resource "aws_eks_cluster" "rancher_cluster" {
+  name = var.cluster_name
+  ami  = ami-05efd9e66ddc3cf4b
+  // rest of the config
+}
+```
+
 ## Note about Rancher Version
 Its the latest stable version from the stable repo (hardcoded) - you can add the `--set version=v2.8.1` by adding in a block to specify the Rancher Version by creating a block in the `rancher` `helm_release` block in `rancher.tf`:
 ```
@@ -31,5 +41,10 @@ Doesn't get much easier... open this directory and
 tofu apply
 ```
 Did I test with Terraform? Nope.
-Will I? Nope
+
+Will I? Nope.
+
 You should switch to OpenTofu if you haven't :)
+
+## Utils
+By default, files will be dumped to the `out` directory (the empty one with a .gitignore) this creates an ssh key so you can ssh into the worker nodes in a secure way. This is a preshared key That your local machine and KMS will have. Also, once the cluster is created a kubeconfig will be dropped in there as well. the helm provider uses this kubeconfig to install ingres-nginx, cert-manager and Rancher.
