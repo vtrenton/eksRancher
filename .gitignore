@@ -4,4 +4,3 @@
 *.terraform/*
 *.backup
 *.pem
-out/*
