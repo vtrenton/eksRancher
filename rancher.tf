@@ -42,11 +42,11 @@ resource "helm_release" "rancher" {
 
   set {
     name  = "hostname"
-    value = "rancher.trentonvanderwert.com"
+    value = var.rancher_hostname
   }
   set {
-    name  = "bootstrapPasswords"
-    value = "admin"
+    name  = "bootstrapPassword"
+    value = var.bootstrapPassword
   }
   set {
     name  = "ingress.tls.source"
@@ -54,7 +54,7 @@ resource "helm_release" "rancher" {
   }
   set {
     name  = "letsEncrypt.email"
-    value = "trenton.vanderwert@gmail.com"
+    value = var.letsEncryptEmail
   }
   set {
     name  = "letsEncrypt.ingress.class"

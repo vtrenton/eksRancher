@@ -1,5 +1,5 @@
 resource "aws_vpc" "cluster_lan" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = {
@@ -31,9 +31,9 @@ resource "aws_route_table" "cluster_route_table" {
 
 resource "aws_subnet" "rancher_master_a" {
   # vpc + 8 net bits = netsize of 10.0.0.0/24
-  cidr_block        = cidrsubnet(aws_vpc.cluster_lan.cidr_block, 8, 0)
+  cidr_block        = cidrsubnet(aws_vpc.cluster_lan.cidr_block, var.az_subnet, 0)
   vpc_id            = aws_vpc.cluster_lan.id
-  availability_zone = "us-east-1a"
+  availability_zone = var.az_a
   map_public_ip_on_launch = true
   tags = {
     Name = "rancher_lan_a"
@@ -42,9 +42,9 @@ resource "aws_subnet" "rancher_master_a" {
 
 resource "aws_subnet" "rancher_master_b" {
   # vpc + 8 net bits == netsize of 10.0.1.0/24
-  cidr_block        = cidrsubnet(aws_vpc.cluster_lan.cidr_block, 8, 1)
+  cidr_block        = cidrsubnet(aws_vpc.cluster_lan.cidr_block, var.az_subnet, 1)
   vpc_id            = aws_vpc.cluster_lan.id
-  availability_zone = "us-east-1b"
+  availability_zone = var.az_b
   map_public_ip_on_launch = true
   tags = {
     Name = "rancher_lan_b"

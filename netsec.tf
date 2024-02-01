@@ -20,7 +20,7 @@ resource "aws_security_group" "eks_worker_sg" {
   description = "Security group for EKS cluster with HTTP/HTTPS access"
   vpc_id      = aws_vpc.cluster_lan.id
 
-  # HTTP and HTTPS from anywhere (as in your original SG)
+  # HTTP and HTTPS from anywhere 
   ingress {
     description = "HTTP"
     from_port   = 80
@@ -50,15 +50,6 @@ resource "aws_security_group" "eks_worker_sg" {
     to_port     = -1  # Similarly, -1 here indicates all codes.
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # EKS Control Plane communication (adjust CIDR and ports as necessary)
-  ingress {
-    description = "EKS Control Plane to Worker Nodes"
-    from_port   = 10250
-    to_port     = 10250
-    protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/27", "10.0.0.32/27", "10.0.0.0/16"]
   }
 
   # Worker Node to Worker Node communication

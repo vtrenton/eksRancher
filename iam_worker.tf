@@ -1,6 +1,6 @@
 # IAM role for EKS Worker Nodes
 resource "aws_iam_role" "eks_worker_role" {
-  name = "eksRancherWorker"
+  name = var.worker_iam_role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",

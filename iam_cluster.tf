@@ -1,5 +1,5 @@
 resource "aws_iam_role" "eks_cluster_role" {
-  name = "eksRancherCluster"
+  name = var.cluster_iam_role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -17,7 +17,7 @@ resource "aws_iam_role" "eks_cluster_role" {
 
 
 resource "aws_iam_policy" "eks_cloudwatch_metrics" {
-  name        = "eksCloudwatch"
+  name        = var.cloudwatch_iam_role_name
   description = "Policy for EKS worker nodes"
 
   policy = jsonencode({
@@ -36,14 +36,14 @@ resource "aws_iam_policy" "eks_cloudwatch_metrics" {
 }
 
 resource "aws_iam_policy" "eks_elb_perms" {
-  name        = "eksELBPolicy"
+  name        = var.elb_iam_role_name
   description = "Policy for EKS worker nodes"
 
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
-        Sid      = "CloudwatchMetric",
+        Sid      = "ELBPolicy",
         Effect   = "Allow",
         Action   = [
             "ec2:DescribeAccountAttributes",
