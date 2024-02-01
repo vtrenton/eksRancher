@@ -55,6 +55,7 @@ KUBECONFIG
 
 # Create the eksRancher.yaml file
 resource "local_file" "eks_rancher_config" {
-  filename = "${path.module}/out/eksRancher.yaml"
-  content  = local.kubeconfig
+  filename        = "${path.module}/out/eksRancher.yaml"
+  content         = local.kubeconfig
+  file_permission = "600"
 }

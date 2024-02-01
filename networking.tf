@@ -30,8 +30,8 @@ resource "aws_route_table" "cluster_route_table" {
 }
 
 resource "aws_subnet" "rancher_master_a" {
-  # vpc + 11 net bits == netsize of 10.0.0.0 to 10.0.0.31 (10.0.0.0/27)
-  cidr_block        = cidrsubnet(aws_vpc.cluster_lan.cidr_block, 11, 0)
+  # vpc + 8 net bits = netsize of 10.0.0.0/24
+  cidr_block        = cidrsubnet(aws_vpc.cluster_lan.cidr_block, 8, 0)
   vpc_id            = aws_vpc.cluster_lan.id
   availability_zone = "us-east-1a"
   map_public_ip_on_launch = true
@@ -41,8 +41,8 @@ resource "aws_subnet" "rancher_master_a" {
 }
 
 resource "aws_subnet" "rancher_master_b" {
-  # vpc + 11 net bits == netsize of 10.0.0.32 to 10.0.0.63 (10.0.0.0/27)
-  cidr_block        = cidrsubnet(aws_vpc.cluster_lan.cidr_block, 11, 1)
+  # vpc + 8 net bits == netsize of 10.0.1.0/24
+  cidr_block        = cidrsubnet(aws_vpc.cluster_lan.cidr_block, 8, 1)
   vpc_id            = aws_vpc.cluster_lan.id
   availability_zone = "us-east-1b"
   map_public_ip_on_launch = true
