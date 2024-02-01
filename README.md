@@ -24,4 +24,12 @@ set {
 ```
 But just know if that you should always try to be on the latest availible Rancher Prime Release. If you are trying to use an osbolete version of Rancher. You should seriously reconsider if this is the best tool for the job.
 
+# Usage
 
+Doesn't get much easier... open this directory and
+```
+tofu apply
+```
+Did I test with Terraform? Nope.
+Will I? Nope
+You should switch to OpenTofu if you haven't :)
