@@ -15,7 +15,7 @@ it's ingress-nginx - the default kubernetes one - don't like it? the fork button
 Yea it's probably pretty old but I need to keep in the spirit of the Rancher Support Matrix: https://www.suse.com/suse-rancher/support-matrix/all-supported-versions
 
 ## Note about AMI
-if you don't specify one - Amazon picks the purpose built AMI for EKS called bottlerocket and picks the spcific image for your version. I personally think the Amazon defaults are the best for an EKS cluster. So stick with that. On the other hand if you need to change to your shiney sexy super awesome Linux AMI with all the bells and whistles of the enterprise you can add an AMI in the `rancher_cluster` `aws_eks_cluster` resource in the `eks.tf` file. For example: 
+if you don't specify one - Amazon picks the purpose built AMI for EKS called bottlerocket and picks the specific image for your version. I personally think the Amazon defaults are the best for an EKS cluster. So stick with that. On the other hand if you need to change to your shiney sexy super awesome Linux AMI with all the bells and whistles of the enterprise you can add an AMI in the `rancher_cluster` `aws_eks_cluster` resource in the `eks.tf` file. For example: 
 ```
 resource "aws_eks_cluster" "rancher_cluster" {
   name = var.cluster_name

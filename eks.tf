@@ -29,6 +29,13 @@ resource "aws_eks_cluster" "rancher_cluster" {
         }
         resources = ["secrets"]
     }
+    
+    depends_on = [
+        aws_vpc.cluster_lan,
+        aws_internet_gateway.rancher_cluster_gw,
+        aws_subnet.rancher_master_a,
+        aws_subnet.rancher_master_b
+    ]
 }
 
 # launch config for workers

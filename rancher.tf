@@ -2,6 +2,7 @@ provider "helm" {
     kubernetes {
         config_path = local_file.eks_rancher_config.filename
     }
+    debug = true
 }
 
 # Install ingress-nginx on the cluster
@@ -16,6 +17,10 @@ resource "helm_release" "ingress_nginx" {
     name  = "service.type"
     value = "LoadBalancer"
   }
+
+  depends_on = [
+    aws_eks_node_group.rancher_node_group
+  ]
 }
 
 # Install Cert-manager on the cluster
@@ -30,6 +35,10 @@ resource "helm_release" "cert_manager" {
     name   = "installCRDs"
     value  = true
   }
+
+  depends_on = [
+    aws_eks_node_group.rancher_node_group
+  ]
 }
 
 # Install Rancher on the cluster
@@ -62,6 +71,7 @@ resource "helm_release" "rancher" {
   }
 
   depends_on = [
+    aws_eks_node_group.rancher_node_group,
     helm_release.ingress_nginx,
     helm_release.cert_manager
   ]

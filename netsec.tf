@@ -35,6 +35,15 @@ resource "aws_security_group" "eks_worker_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  # temp for troubleshooting
+  ingress {
+    description = "Kubelet"
+    from_port   = 10250
+    to_port     = 10250
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
 
   # SSH for troubleshooting
   ingress {
