@@ -2,6 +2,8 @@
 
 This is a demo of a very simple deployment of Rancher on EKS! You can use this as you please to set up your own lab and production environments (I dont provide support of any kind). Obviously this doesn't fit every use case ever. But this should be a good start if you are looking to get up and running with Rancher in EKS.
 
+![eksRancherDiagram](https://github.com/vtrenton/eksRancher/assets/85969349/ea65521e-746e-41ad-9b85-96b5dd24f98d)
+
 ## Varibles - Use them
 I created a `terraform.tfvars` file so you can quickly swap out my setttings for your own. This isn't all encompansing and I took some liberty to just have some hard coded defaults. If you don't like my defaults - its not hard to change. I wouldn't mind a PR to make things more flexible but It really isn't my priority.
 
