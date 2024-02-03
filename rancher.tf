@@ -13,9 +13,16 @@ resource "helm_release" "ingress_nginx" {
   repository       = "https://kubernetes.github.io/ingress-nginx"
   chart            = "ingress-nginx"
 
+  # expose via elb
   set {
     name  = "service.type"
     value = "LoadBalancer"
+  }
+
+  # Set as default ingressClass
+  set {
+    name  = "controller.ingressClassResource.default"
+    value = true
   }
 
   depends_on = [

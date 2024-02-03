@@ -28,6 +28,7 @@ resource "aws_security_group" "eks_worker_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   ingress {
     description = "HTTPS"
     from_port   = 443
@@ -35,6 +36,15 @@ resource "aws_security_group" "eks_worker_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+    description = "Webhook"
+    from_port   = 8443
+    to_port     = 8443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # temp for troubleshooting
   ingress {
     description = "Kubelet"
@@ -44,8 +54,7 @@ resource "aws_security_group" "eks_worker_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-
-  # SSH for troubleshooting
+  # SSH access to worker nodes
   ingress {
     description = "SSH"
     from_port   = 22
@@ -53,6 +62,7 @@ resource "aws_security_group" "eks_worker_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   ingress {
     description = "ICMP"
     from_port   = -1  # For ICMP, -1 indicates all types.
